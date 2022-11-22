@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_notificacion" model="ir.ui.view">
+            <field name="name">Notificacion</field>
+            <field name="model">marangatu.notificacion.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <p> <field name="mensaje" readonly="1"/> </p>
+                    <footer>
+                        <button string="_Aceptar" special="cancel" class="btn-primary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

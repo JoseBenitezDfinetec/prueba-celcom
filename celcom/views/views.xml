@@ -1,0 +1,147 @@
+<odoo>
+  <data>
+      <record id="view_account_payment_register_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.register.form.inherit</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='group_payment']" position="replace">
+                <field name="group_payment" string="Pago parcial"
+                                   attrs="{'invisible': [('can_group_payments', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//group[@name='group1']" position="inside">
+                <field name="talonario" attrs="{'invisible': [('payment_type','=','outbound')], 'required': [('payment_type','!=','outbound')]}"/>
+                <field name="nro_talonario" attrs="{'invisible': [('payment_type','=','outbound')], 'required': [('payment_type','!=','outbound')]}"/>
+            </xpath>
+            <xpath expr="//group[@name='group2']" position="inside">
+                <field name="documento_de_pago"/>
+            </xpath>
+            <xpath expr="//group[@name='group3']" position="after">
+                <div name="documentos_pago">
+                    <strong attrs="{'invisible':[('documento_de_pago','=',False)]}">Documentos de Pago</strong>
+                    <field name="docs_pago" attrs="{'invisible':[('documento_de_pago','=',False)], 'required':[('documento_de_pago','=',True)]}">
+                        <tree editable="bottom" string="Documentos de Pagos">
+                            <field name="x_name" modifiers="{}" string="Documento"/>
+                            <field name="x_studio_monto"/>
+                            <field name="x_studio_moneda"/>
+                            <field name="x_studio_fecha_emision"/>
+                            <field name="x_studio_fecha_cobro"/>
+                            <field name="x_studio_estado"/>
+                        </tree>
+                    </field>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='partner_bank_id']" position="replace">
+                <field name="partner_bank_id" attrs="{'invisible': True}"/>
+            </xpath>
+            <xpath expr="//field[@name='communication']" position="replace">
+                <field name="communication" attrs="{'invisible': True}"/>
+                <field name="ref_cliente" string="Memo" attrs="{'invisible':[('partner_type','=','supplier')]}"/>
+                <field name="referencia_proveedor" string="Referencia de Proveedores" attrs="{'invisible':[('partner_type','=','customer')]}"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+          <xpath expr="//field[@name='partner_id']" position="replace">
+              <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True, 'default_is_company': True}" options='{"always_reload": True, "no_quick_create": True}'/>
+          </xpath>
+        </field>
+    </record>
+
+    <record id="view_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_date']" position="after">
+                <field name="timbrado_proveedor" attrs="{'invisible': [('move_type','not in',['in_invoice','in_refund'])], 'readonly':[('state','in',['posted','cancelled'])],'required':[('move_type','in',['in_invoice','in_refund'])]}"/>
+                <field name="vencimiento_timbrado" attrs="{'invisible': [('move_type','not in',['in_invoice','in_refund'])], 'readonly':[('state','in',['posted','cancelled'])],'required':[('move_type','in',['in_invoice','in_refund'])]}"/>
+                <field name="diario_doc_pago" attrs="{'invisible': True}"/>
+            </xpath>
+            <xpath expr="//page[@id='other_tab_entry']" position="after">
+                <page id="doc_pagos" string="Documentos de Pagos" attrs="{'invisible': [('diario_doc_pago','=',False)]}">
+                    <field name="docs_pago">
+                        <tree editable="bottom" string="Documentos de Pagos">
+                            <field name="x_name" modifiers="{}" string="Documento"/>
+                            <field name="x_studio_monto"/>
+                            <field name="x_studio_moneda"/>
+                            <field name="x_studio_fecha_emision"/>
+                            <field name="x_studio_fecha_cobro"/>
+                            <field name="x_studio_estado"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_payment_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="replace">
+                <field name="ref" attrs="{'invisible': True}"/>
+                <field name="ref_cliente" string="Memo" attrs="{'invisible':[('partner_type','=','supplier')]}"/>
+                <field name="referencia_proveedor" string="Referencia de Proveedores" attrs="{'invisible':[('partner_type','=','customer')]}"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_account_move_reversal_inherit" model="ir.ui.view">
+        <field name="name">account.move.reversal.form.inherited</field>
+        <field name="model">account.move.reversal</field>
+        <field name="inherit_id" ref="account.view_account_move_reversal"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form[1]/group[1]" position="replace">
+                <group attrs="{'invisible': True}">
+                         <group attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'in_invoice'))]}">
+                            <field name="refund_method" widget="radio" attrs="{'readonly': [('residual', '=', 0)]}"/>
+                         </group>
+                         <group attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'in_invoice', 'some_invoice'))]}">
+                            <div attrs="{'invisible':[('refund_method', '!=', 'refund')]}" class="oe_grey" colspan="4">
+                               The credit note is created in draft and can be edited before being issued.
+                            </div>
+                            <div attrs="{'invisible':[('refund_method', '!=', 'cancel')]}" class="oe_grey" colspan="4">
+                               The credit note is auto-validated and reconciled with the invoice.
+                            </div>
+                            <div attrs="{'invisible':[('refund_method', '!=', 'modify')]}" class="oe_grey" colspan="4">
+                               The credit note is auto-validated and reconciled with the invoice.
+                               The original invoice is duplicated as a new draft.
+                            </div>
+                         </group>
+                    </group>
+
+            </xpath>
+        </field>
+    </record>
+    <record id="view_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field eval="12" name="priority"/>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="es_nota_remision" attrs="{'invisible': [('picking_type_code','=','incoming')]}"/>
+                <field name="talonario" domain="[('x_studio_tipo_de_talonario','=','4')]" attrs="{'readonly': [('state','in',('done','canceled'))], 'invisible': [('es_nota_remision','=',False)], 'required':[('es_nota_remision','=',True)]}"/>
+                <field name="timbrado" attrs="{'invisible': True}"/>
+                <field name="numeracion" attrs="{'readonly': [('state','in',('done','canceled'))], 'invisible': [('es_nota_remision','=',False)], 'required':[('es_nota_remision','=',True)]}"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_account_journal_form_inherit" model="ir.ui.view">
+        <field name="name">account.journal.form.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet[1]/group[1]/group[2]" position="after">
+                <group>
+                    <field name="doc_pago"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

@@ -1,0 +1,95 @@
+<odoo>
+    <data>
+<!--        <record model="ir.ui.view" id="account_payment_form">-->
+<!--            <field name="name">Marangatu Payment Form</field>-->
+<!--            <field name="model">account.payment</field>-->
+<!--            <field name="inherit_id" ref="account.view_account_payment_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                &lt;!&ndash; Se ocultan los campos de tipo usados previamente para Hechauka que se encuentra en talonario_py &ndash;&gt;-->
+<!--                <field name="payment_type" position="replace"/>-->
+<!--                <field name="partner_type" position="replace"/>-->
+<!--                <xpath expr="//form[1]/sheet[1]/div[2]" position="after">-->
+<!--                    <group>-->
+<!--                        <field name="payment_type" widget="radio" attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                        <field name="partner_type" widget="selection" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('is_internal_transfer', '=', True)]}"/>-->
+<!--                    </group>-->
+<!--                </xpath>-->
+
+                <!-- Se agregan los campos de tipos para comprobantes de ingresos y egresos -->
+                <!-- Los campos nro_cta_tarjeta y entidad_financiera solo aparecen cuando el pago es de tipo Transferencia Bancaria o Extracto de cuenta TC/TD-->
+                <!-- El campo id_empleador solo aparece cuando el pago es de tipo Extracto de Cuenta IPS -->
+                <!-- El campo tipo_doc_asoc solo aparece cuando el pago es de tipo Otros Comprobantes de Egresos -->
+                <!-- Los campos numero_doc_asoc y timbrado_doc_asoc solo aparecen cuando el pago es de tipo Comprobante de Egresos por Compras a Crédito o Comprobante de Ingresos por Ventas a Crédito -->
+<!--                <field name="payment_type" position="after">-->
+<!--                    <field name="tipo_comprobante_ingreso" attrs="{'required':[('payment_type','=','inbound')],'invisible':[('payment_type','!=','inbound')], 'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                    <field name="tipo_comprobante_egreso" attrs="{'required':[('payment_type','=','outbound')],'invisible':[('payment_type','!=','outbound')], 'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                    <field name="numero_comprobante" attrs="{'required':[('payment_type','=','outbound'),('tipo_comprobante_egreso','not in',('205','206','207','208'))], 'invisible': ['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','in',('205','206','207','208')),('payment_type','=','inbound')]}"/>-->
+<!--                    <field name="nro_cta_tarjeta" attrs="{'required':[('payment_type','=','outbound'),('tipo_comprobante_egreso','in',('207','211'))],'invisible':['|',('payment_type','=','inbound'),'&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','not in',('207','211'))], 'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                    <field name="entidad_financiera" attrs="{'required':[('payment_type','=','outbound'),('tipo_comprobante_egreso','in',('207','211'))],'invisible':['|',('payment_type','=','inbound'),'&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','not in',('207','211'))], 'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                    <field name="id_empleador" attrs="{'required':[('payment_type','=','outbound'),('tipo_comprobante_egreso','=','206')],'invisible':['|',('payment_type','=','inbound'),'&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','!=','206')], 'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                    <field name="tipo_doc_asoc" attrs="{'required':['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','=','209'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','=','210')],'invisible':['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','!=','209'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','!=','210')], 'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                    <field name="numero_doc_asoc" attrs="{'required':['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','=','201'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','=','203')],'invisible':['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','!=','201'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','!=','203')], 'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                    <field name="timbrado_doc_asoc" attrs="{'required':['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','=','201'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','=','203')],'invisible':['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','!=','201'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','!=','203')], 'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                </field>-->
+
+                <!-- El monto se vuelve solo lectura cuando el pago es de tipo Recibir Dinero y no es del tipo Comprobante de Ingresos por Ventas a Crédito -->
+<!--                <field name="amount" position="replace">-->
+<!--                    <field name="amount" string="Monto Total Comprobante" attrs="{'readonly': ['|','&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','!=','203'),('state', '!=', 'draft')]}" force_save="1"/>-->
+<!--                </field>-->
+                <!-- El monto divide en Monto Gravado y Monto No Gravado cuando el pago es de tipo Recibir Dinero y no es del tipo Comprobante de Ingresos por Ventas a Crédito -->
+<!--                <xpath expr="//label[@for='amount']" position="before">-->
+<!--                    <field name="monto_gravado" attrs="{'invisible':['|',('payment_type','!=','inbound'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','=','203')], 'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                    <field name="monto_gravado_gs" attrs="{'invisible': True}"/>-->
+<!--                    <field name="monto_no_gravado" attrs="{'invisible':['|',('payment_type','!=','inbound'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','=','203')], 'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                    <field name="monto_no_gravado_gs" attrs="{'invisible': True}"/>-->
+<!--                </xpath>-->
+<!--                <field name="date" position="after">-->
+<!--                    <field name="imputacion_iva" attrs="{'invisible':['|',('payment_type','!=','outbound'),'&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','!=','207')], 'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                    <field name="imputacion_ire" attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                    <field name="imputacion_irp" attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                    <field name="no_imputa" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible':[('payment_type','!=','outbound')]}"/>-->
+<!--                </field>-->
+<!--            </field>-->
+<!--        </record>-->
+
+
+        <!--Se modifica de la misma forma al pop-up de pago que se abre dentro de las facturas al darle Registrar Pago-->
+<!--        <record model="ir.ui.view" id="view_account_payment_register_form_inherit">-->
+<!--            <field name="name">Marangatu Payment Register Form</field>-->
+<!--            <field name="model">account.payment.register</field>-->
+<!--            <field name="inherit_id" ref="account.view_account_payment_register_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <field name="journal_id" position="before">-->
+<!--                    <field name="tipo_comprobante_ingreso" attrs="{'required':[('payment_type','=','inbound')],'invisible':[('payment_type','!=','inbound')]}"/>-->
+<!--                    <field name="tipo_comprobante_egreso" attrs="{'required':[('payment_type','=','outbound')],'invisible':[('payment_type','!=','outbound')]}"/>-->
+<!--                </field>-->
+<!--                <xpath expr="//group[@name='group1']" position="after">-->
+<!--                    <group name="group1_5">-->
+<!--                        <field name="numero_comprobante" attrs="{'required':[('payment_type','=','outbound'),('tipo_comprobante_egreso','not in',('205','206','207','208'))], 'invisible': ['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','in',('205','206','207','208')),('payment_type','=','inbound')]}"/>-->
+<!--                        <field name="nro_cta_tarjeta" attrs="{'required':[('payment_type','=','outbound'),('tipo_comprobante_egreso','in',('207','211'))],'invisible':['|',('payment_type','=','inbound'),'&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','not in',('207','211'))]}"/>-->
+<!--                        <field name="entidad_financiera" attrs="{'required':[('payment_type','=','outbound'),('tipo_comprobante_egreso','in',('207','211'))],'invisible':['|',('payment_type','=','inbound'),'&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','not in',('207','211'))]}"/>-->
+<!--                        <field name="id_empleador" attrs="{'required':[('payment_type','=','outbound'),('tipo_comprobante_egreso','=','206')],'invisible':['|',('payment_type','=','inbound'),'&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','!=','206')]}"/>-->
+<!--                        <field name="tipo_doc_asoc" attrs="{'required':['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','=','209'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','=','210')],'invisible':['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','!=','209'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','!=','210')]}"/>-->
+<!--                        <field name="numero_doc_asoc" attrs="{'required':['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','=','201'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','=','203')],'invisible':['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','!=','201'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','!=','203')]}"/>-->
+<!--                        <field name="timbrado_doc_asoc" attrs="{'required':['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','=','201'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','=','203')],'invisible':['|','&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','!=','201'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','!=','203')]}"/>-->
+<!--                    </group>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//label[@for='amount']" position="before">-->
+<!--                    <field name="imputacion_iva" attrs="{'invisible':['|',('payment_type','!=','outbound'),'&amp;',('payment_type','=','outbound'),('tipo_comprobante_egreso','!=','207')]}"/>-->
+<!--                    <field name="imputacion_ire"/>-->
+<!--                    <field name="imputacion_irp"/>-->
+<!--                    <field name="no_imputa" attrs="{'invisible':[('payment_type','!=','outbound')]}"/>-->
+<!--                    <field name="monto_gravado" attrs="{'invisible':['|','|',('payment_type','!=','inbound'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','=','203'),'|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}"/>-->
+<!--                    <field name="monto_gravado_gs" attrs="{'invisible': True}"/>-->
+<!--                    <field name="monto_no_gravado" attrs="{'invisible':['|','|',('payment_type','!=','inbound'),'&amp;',('payment_type','=','inbound'),('tipo_comprobante_ingreso','=','203'),'|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}"/>-->
+<!--                    <field name="monto_no_gravado_gs" attrs="{'invisible': True}"/>-->
+<!--                </xpath>-->
+<!--                <field name="amount" position="replace">-->
+<!--                    <field name="amount" string="Monto Total Comprobante" attrs="{'readonly': [('payment_type','=','inbound'),('tipo_comprobante_ingreso','!=','203')],'invisible': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}" force_save="1"/>-->
+<!--                </field>-->
+<!--            </field>-->
+<!--        </record>-->
+
+
+    </data>
+</odoo>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_marangatu" model="ir.ui.view">
+        <field name="name">marangatu</field>
+        <field name="model">marangatu.reporte</field>
+        <field name="arch" type="xml">
+            <form string="Complete los datos">
+                <group>
+                    <field name="tipo_formulario" string="Tipo de Formulario"/>
+                    <field name="tipo_reporte" string="Tipo de Reporte"/>
+                    <field name="mes" string="Mes" attrs="{'invisible':[('tipo_formulario','!=','1')]}"/>
+                    <field name="anho" string="Año"/>
+                </group>
+                <footer>
+                    <button string="Generar Reporte" name="report_marangatu" type="object" class="btn-primary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_marangatu_details" model="ir.actions.act_window">
+        <field name="name">Marangatu</field>
+        <field name="res_model">marangatu.reporte</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_marangatu"/>
+        <field name="target">new</field>
+        <field name="context">{'create': False}</field>
+    </record>
+
+    <record model="ir.ui.view" id="set_marangatu_archivo_tree" >
+      <field name="name">marangatu.archivo</field>
+      <field name="model">marangatu.archivo</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml" >
+        <tree string="informes"   delete="false"  edit="false" create="false"  >
+          <field name="name" string="Nombre"/>
+          <field name="archivo" string="Archivo" filename="name" widget="binary"/>
+          <field name="fecha_creacion" string="Fecha de Creacion"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="action_marangatu_archivo" model="ir.actions.act_window">
+        <field name="name">Consultar Informes Marangatu</field>
+        <field name="res_model">marangatu.archivo</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.ui.view" id="set_marangatu_reporte_tree" >
+      <field name="name">marangatu.reporte</field>
+      <field name="model">marangatu.reporte</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml" >
+        <tree string="informes" delete="false" edit="false" create="false">
+          <field name="name" string="Nombre"/>
+          <field name="periodo" string="Periodo"/>
+          <field name="tipo_formulario" string="Tipo de Formulario"/>
+          <field name="tipo_reporte" string="Tipo de Reporte"/>
+          <field name="fecha_creacion" string="Fecha de Creacion"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="view_form_marangatu" model="ir.ui.view">
+        <field name="name">Formulario Marangatu</field>
+        <field name="model">marangatu.reporte</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group name="detalles_reporte">
+                        <field name="name" string="Reporte" attrs="{'readonly': True}"/>
+                        <field name="periodo" string="Periodo" attrs="{'readonly': True}"/>
+                        <field name="tipo_reporte" string="Tipo de Reporte" attrs="{'readonly': True}"/>
+                        <field name="mes" string="Mes" attrs="{'invisible':[('tipo_reporte','!=','1')], 'readonly': True}"/>
+                        <field name="anho" string="Año" attrs="{'readonly': True}"/>
+                    </group>
+                    <group name="archivos">
+                        <field name="archivos" widget="one2many">
+                            <tree create="0" delete="0">
+                                <field name="name" string="Nombre"/>
+                                <field name="archivo" string="Archivo" filename="name" widget="binary"/>
+                                <field name="fecha_creacion" string="Fecha de Creacion"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_marangatu_reporte" model="ir.actions.act_window">
+        <field name="name">Consultar Informes Marangatu</field>
+        <field name="res_model">marangatu.reporte</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('name','!=','')]</field>
+    </record>
+
+    <menuitem id="menu_reporte_marangatu" name="Marangatu" parent="account.menu_finance_reports" sequence="1" />
+
+    <menuitem id="menu_generar_marangatu" name="Generar Marangatu" parent="marangatu.menu_reporte_marangatu" sequence="1" action="action_marangatu_details"/>
+
+<!--    <menuitem action="action_marangatu_archivo" id="menu_marangatu_archivo" name="Archivos Marangatu" parent="marangatu.menu_reporte_marangatu" sequence="2"/>-->
+
+    <menuitem action="action_marangatu_reporte" id="menu_marangatu_reporte" name="Reportes Marangatu" parent="marangatu.menu_reporte_marangatu" sequence="3"/>
+
+</odoo>

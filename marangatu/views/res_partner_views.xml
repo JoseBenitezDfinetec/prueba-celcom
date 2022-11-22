@@ -1,0 +1,14 @@
+<odoo>
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="talonario_py.res_partner_talonario"/>
+        <field name="arch" type="xml">
+            <field name="vat" position="replace">
+                <field name="vat" invisible="1"/>
+                <field name="tipo_documento"/>
+                <field name="nro_documento" string="Número de Documento" placeholder="e.j. 80123456-7" attrs="{'readonly': [('parent_id','!=',False)], 'invisible': [('tipo_documento','=','15')]}"/>
+            </field>
+        </field>
+    </record>
+</odoo>

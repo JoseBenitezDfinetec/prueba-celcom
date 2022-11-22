@@ -1,0 +1,22 @@
+<odoo>
+  <data>
+    <!-- Agrega fields a res.company -->
+    <record id="view_company_form" model="ir.ui.view">
+        <field name="name">syo_hechauka.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="razon_social"/>
+                <field name="representante_legal"/>
+                <field name="ruc_representante" placeholder="XXXXXXXX-X Ej: 80011111-8"/>
+                <field name="exportador"/>
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="replace">
+                <field name="vat" string="RUC"/>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

@@ -1,0 +1,62 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="account_hechauka_settings_inherit">
+            <field name="name">syo_hechauka.account.settings.inherit1</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@data-key='account']" position="inside">
+                    <h2 name="order">Impuestos por Defecto</h2>
+                    <div class="row mt16 o_settings_container" id="hechauka" title="Estos Impuestos son utilizados para elegir los IVA por defecto.">
+                        <div class="col-12 col-lg-6 o_setting_box" id="hechauka_compra" title="Impuestos definidos para IVA Compra por defecto.">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Impuestos para Compras</span>
+                                <div class="text-muted">
+                                    Definir los impuesto de Compras para IVA Crédito Fiscal y Exenta
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label string="IVA Crédito Fiscal 10%" for="iva_10_compra" class="col-lg-3 o_light_label"/>
+                                        <field name="iva_10_compra" domain="[('type_tax_use', 'in', ('purchase', 'all')), ('company_id', '=', company_id)]"/>
+                                    </div>
+                                    <div class="row">
+                                        <label string="IVA Crédito Fiscal 5%" for="iva_5_compra" class="col-lg-3 o_light_label"/>
+                                        <field name="iva_5_compra" domain="[('type_tax_use', 'in', ('purchase', 'all')), ('company_id', '=', company_id)]"/>
+                                    </div>
+                                    <div class="row">
+                                        <label string="Exentas" for="exento_compra" class="col-lg-3 o_light_label"/>
+                                        <field name="exento_compra" domain="[('type_tax_use', 'in', ('purchase', 'all')), ('company_id', '=', company_id)]"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" id="hechauka_venta" title="Impuestos definidos para IVA Venta por defecto.">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Impuestos para Ventas</span>
+                                <div class="text-muted">
+                                    Definir los impuesto de Venta para IVA Débito Fiscal y Exenta
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label string="IVA Débito Fiscal 10%" for="iva_10_venta" class="col-lg-3 o_light_label"/>
+                                        <field name="iva_10_venta" domain="[('type_tax_use', 'in', ('sale', 'all')), ('company_id', '=', company_id)]"/>
+                                    </div>
+                                    <div class="row">
+                                        <label string="IVA Débito Fiscal 5%" for="iva_5_venta" class="col-lg-3 o_light_label"/>
+                                        <field name="iva_5_venta" domain="[('type_tax_use', 'in', ('sale', 'all')), ('company_id', '=', company_id)]"/>
+                                    </div>
+                                    <div class="row">
+                                        <label string="Exentas" for="exento_venta" class="col-lg-3 o_light_label"/>
+                                        <field name="exento_venta" domain="[('type_tax_use', 'in', ('sale', 'all')), ('company_id', '=', company_id)]"/>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </div>
+                 </xpath>
+            </field>
+        </record>
+  </data>
+</odoo>

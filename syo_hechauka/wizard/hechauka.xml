@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hechauka" model="ir.ui.view">
+        <field name="name">Hechauka</field>
+        <field name="model">syo_hechauka.hechauka.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Complete los datos">
+                <group>
+                    <field name="anho" string="Año"/>
+                    <field name="mes" string="Mes"/>
+                    <field name="tipo_reporte" string="Tipo de Reporte"/>
+                    <field name="tipo_formulario" string="Tipo Formulario"/>
+                </group>
+                <footer>
+                    <button string="Generar Reporte" name="report_hecha" type="object" class="btn-primary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hechauka_details" model="ir.actions.act_window">
+        <field name="name">Hechauka</field>
+        <field name="res_model">syo_hechauka.hechauka.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_hechauka"/>
+        <field name="target">new</field>
+        <field name="context">{'default_compute_at_date': 0}</field>
+    </record>
+
+    <record model="ir.ui.view" id="set_hechauka_archivo_tree" >
+      <field name="name">syo_hechauka.hechauka.archivo</field>
+      <field name="model">syo_hechauka.hechauka.archivo</field>
+      <field name="type">tree</field>
+
+      <field name="arch" type="xml" >
+        <tree string="informes"   delete="false"  edit="false" create="false"  >
+          <field name="name"  string="Periodo"/>
+          <field name="nombre"  string="Nombre"/>
+          <field name="archivo" string="Archivo" filename="nombre" widget="binary" />
+          <field name="fecha_creacion" string="Fecha de Creacion" />
+        </tree>
+      </field>
+    </record>
+    <record id="action_hechauka_archivo" model="ir.actions.act_window">
+        <field name="name">Consultar Informes Hechauka</field>
+        <field name="res_model">syo_hechauka.hechauka.archivo</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_reporte_hechauka" name="Hechauka" parent="account.menu_finance_reports" sequence="1" />
+
+    <menuitem id="menu_generar_hechauka" name="Generar Hechauka" parent="syo_hechauka.menu_reporte_hechauka" sequence="1" action="action_hechauka_details"/>
+
+    <menuitem action="action_hechauka_archivo" id="menu_hechauka_archivo" name="Reportes Hechauka" parent="syo_hechauka.menu_reporte_hechauka" sequence="2"/>
+
+</odoo>

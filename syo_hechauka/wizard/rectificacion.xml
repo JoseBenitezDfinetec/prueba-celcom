@@ -1,0 +1,17 @@
+<odoo>
+  <data>
+    <!-- Rectificacion -->
+
+    <record model="ir.ui.view" id="syo_hechauka.form_rectificacion">
+      <field name="name">syo_hechauka Rectificacion</field>
+      <field name="model">account.invoice.refund</field>
+      <field name="priority" eval="10"/>
+      <field name="inherit_id" ref="account.view_account_invoice_refund"/>
+      <field name="arch" type="xml">
+          <xpath expr="//field[@name='description']" position="after">
+            <field name="talonario" string="Talonario"  domain="[('activo', '=', True),('tipo_talonario', '=', '2'),('numero_actual', '!=', 'numero_fin'),('timbrado.vencido', '=', False)]"/>
+          </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

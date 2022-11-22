@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <template id="sale_order_portal_content_inherit" inherit_id="sale.sale_order_portal_content" name="IoT assets">
+            <xpath expr="//section[@t-if='sale_order.payment_term_id']" position="after">
+                <section class="mt-5" t-if="sale_order.x_studio_warranty">
+                    <h3 class="">Tipo de Garantía</h3>
+                    <hr class="mt-0 mb-1"/>
+                    <span t-field="sale_order.x_studio_warranty"/>
+                </section>
+                <section class="mt-5" t-if="sale_order.x_plazo_de_entrega">
+                    <h3 class="">Plazo de entrega</h3>
+                    <hr class="mt-0 mb-1"/>
+                    <span t-field="sale_order.x_plazo_de_entrega"/>
+                </section>
+            </xpath>
+        </template>
+    </data>
+</odoo>
